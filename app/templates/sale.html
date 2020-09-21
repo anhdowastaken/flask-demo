@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, [{{ current_user.role }}] {{ current_user.username }}!</h1>
+    <form action="upload" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.licenseFile.label }}<br>
+            {{ form.licenseFile }}<br>
+            {% for error in form.licenseFile.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    <table border=1>
+        <thead><tr><th>ID</th><th>Timestamp</th><th>Uploader</th><th></th></tr></thead>
+        <tbody>
+            {% for lf in licenseFiles %}
+            <tr>
+                <td>{{ lf.id }}</td>
+                <td>{{ lf.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ lf.uploader.username }}</td>
+                <td><a href="download/{{ lf.id }}">Download</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
